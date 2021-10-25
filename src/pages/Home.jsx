@@ -21,21 +21,24 @@ export default class Home extends React.Component {
   }
 
   // Função de requisição da API pelo clique no botão de pesquisar
-  handleClick = (e) => {
-    e.preventDefault();
+  handleClick = (event) => {
+    event.preventDefault();
     const { search } = this.state;
     this.setState({ isLoading: true });
     getProductsFromCategoryAndQuery('', search)
-      .then((response) => this.setState({ products: response.results }));
+      .then((response) => this.setState({
+        products: response.results,
+        isLoading: false,
+      }));
   }
 
   render() {
     const { isLoading, products } = this.state;
     return (
       <div>
-        <form action="">
+        <form>
           <input data-testid="query-input" type="text" onChange={ this.handleChange } />
-          <button data-testid="query-button" type="button" onClick={ this.handleClick }>
+          <button data-testid="query-button" type="submit" onClick={ this.handleClick }>
             Pesquisar
           </button>
         </form>
@@ -43,18 +46,15 @@ export default class Home extends React.Component {
           Digite algum termo de pesquisa ou escolha uma categoria.
         </h1>
         <div className="product-container">
-          { // Mostra a mensagem de carregando enquanto a api é requisitada
-            isLoading && <h1>Carregando...</h1>
-          }
-          { // Chama o card de produtos para cada item na resposta da API
-            products.length > 0 && products.map((product) => (
-              <ProductCard
-                key={ product.id }
-                title={ product.title }
-                price={ product.price }
-                thumbnail={ product.thumbnail }
-              />
-            ))
+          { // Mostra a mensagem de carregando enquanto a api é requisitada e mostra os produtos da lista quando a requisição termina
+            isLoading ? <h1>Carregando...</h1>
+              : products.map((product) => (
+                <ProductCard
+                  key={ product.id }
+                  title={ product.title }
+                  price={ product.price }
+                  thumbnail={ product.thumbnail }
+                />))
           }
         </div>
       </div>
