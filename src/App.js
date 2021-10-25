@@ -29,10 +29,10 @@ class App extends React.Component {
       <div>
         {/* Rotas dinamicas para as paginas */}
         {/* Passa o state via props */}
-        <CategoryList { ... this.state } />
         <BrowserRouter>
           <Route exact path="/" component={ Home } />
         </BrowserRouter>
+        <CategoryList { ... this.state } />
       </div>
     );
   }
