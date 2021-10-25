@@ -11,5 +11,6 @@ export default class Home extends React.Component {
         </h1>
         <Link to="/cart" data-testid="shopping-cart-button">Carrinho</Link>
       </div>
-    )}
+    );
+  }
 }

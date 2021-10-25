@@ -8,5 +8,6 @@ export default class Cart extends React.Component {
           Seu carrinho está vazio
         </h1>
       </div>
-    )}
+    );
+  }
 }
