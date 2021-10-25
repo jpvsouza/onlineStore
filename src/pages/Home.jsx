@@ -1,6 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { getProductsFromCategoryAndQuery } from '../services/api';
 import ProductCard from './ProductCard';
+
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -45,6 +47,7 @@ export default class Home extends React.Component {
         <h1 data-testid="home-initial-message">
           Digite algum termo de pesquisa ou escolha uma categoria.
         </h1>
+        <Link to="/cart" data-testid="shopping-cart-button">Carrinho</Link>
         <div className="product-container">
           { // Mostra a mensagem de carregando enquanto a api é requisitada e mostra os produtos da lista quando a requisição termina
             isLoading ? <h1>Carregando...</h1>
