@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+// Remoção de itens acima (logo), desnecessários para o projeto
 import { BrowserRouter, Route } from 'react-router-dom';
 import Home from './pages/Home'; // Componente da tela inicial
 
