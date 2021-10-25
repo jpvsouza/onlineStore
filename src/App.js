@@ -28,6 +28,7 @@ class App extends React.Component {
     return (
       <div>
         {/* Rotas dinamicas para as paginas */}
+        {/* Passa o state via props */}
         <CategoryList { ... this.state } />
         <BrowserRouter>
           <Route exact path="/" component={ Home } />

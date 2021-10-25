@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 export default class CategoryList extends Component {
-  // cria o array que sera rendenizado no CategoryList, usando a props passada pelo pai (App).
+  // cria o array que sera renderizado no CategoryList, usando a props passada pelo pai (App).
   renderCategories = () => {
     const { AllCategories } = this.props;
     const result = AllCategories.map((element) => {
