@@ -29,12 +29,14 @@ class App extends React.Component {
     return (
       <div>
         {/* Rotas dinamicas para as paginas */}
+        {/* Passa o state via props */}
         <BrowserRouter>
           <Route exact path="/" component={ Home } />
           <Route exact path="/cart" component={ Cart } />
           {/* Passa o state via props */}
           <CategoryList { ... this.state } />
         </BrowserRouter>
+        <CategoryList { ... this.state } />
       </div>
     );
   }
