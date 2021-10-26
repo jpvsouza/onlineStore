@@ -47,13 +47,13 @@ class App extends React.Component {
             <Home
               products={ products }
             />
+            {/* Passa o state via props */}
+            <CategoryList
+              { ... this.state }
+              setCategoriesByTermAndID={ this.setCategoriesByTermAndID }
+            />
           </Route>
-          <Route exact path="/cart" component={ Cart } />
-          {/* Passa o state via props */}
-          <CategoryList
-            { ... this.state }
-            setCategoriesByTermAndID={ this.setCategoriesByTermAndID }
-          />
+          <Route path="/cart" component={ Cart } />
         </BrowserRouter>
       </div>
     );
