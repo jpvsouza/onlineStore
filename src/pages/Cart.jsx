@@ -1,5 +1,5 @@
 import React from 'react';
-import { getProductsFromCategoryAndQuery } from '../services/api';
+import PropTypes from 'prop-types';
 
 export default class Cart extends React.Component {
   constructor() {
@@ -13,7 +13,6 @@ export default class Cart extends React.Component {
   async componentDidMount() {
     await this.fetchCartProducts();
     this.funcTest();
-    console.log(this.state.arr);
   }
 
   funcTest = () => {
@@ -45,7 +44,7 @@ export default class Cart extends React.Component {
             </p>
             <p data-testid="shopping-cart-product-quantity">
               {/* 1 */}
-              {`Quantidade: ${pr.body.available_quantity}`}
+              {`Quantidade: ${arr.filter((item) => item === pr.body.id).length}`}
             </p>
           </div>
         )) : (<p>Carregando...</p>)}
@@ -53,3 +52,13 @@ export default class Cart extends React.Component {
     );
   }
 }
+
+Cart.propTypes = {
+  location: PropTypes.shape({
+    state: PropTypes.string.isRequired,
+  }),
+};
+
+Cart.defaultProps = {
+  location: PropTypes.arrayOf(PropTypes.any),
+};
