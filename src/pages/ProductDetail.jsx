@@ -28,29 +28,30 @@ export default class ProductDetail extends Component {
     const { match } = this.props;
     const { id } = match.params;
     const product = await this.getProductById(id);
-    const result = await
+    // const result = await
     getProductsFromCategoryAndQuery(product.category_id, product.title);
-    this.setState({ product, result });
+    this.setState({ product });
   }
 
   render() {
-    const { product, result } = this.state;
+    const { products } = this.props;
     // const { thumbnail, title, price, attributes } = location.state;
     return (
       <div>
         <Link to="/cart" data-testid="shopping-cart-button">Carrinho</Link>
         <p>
-          {console.log(product)}
+          {console.log(products)}
           {/* {console.log(result.results)} */}
         </p>
-        <p data-testid="product-detail-name">{ product.title }</p>
-        <p>{ product.base_price }</p>
-        <img src={ product.thumbnail } alt="" />
-        { product ? product.attributes.map((atr) => (
+        <p data-testid="product-detail-name">{ products.title }</p>
+        <p>{ products.base_price }</p>
+        <img src={ products.thumbnail } alt="" />
+        { products ? products.attributes.map((atr) => (
           <div key={ atr.id }>
             <p>
               { atr.name }
               :
+              {' '}
               { atr.value_name }
             </p>
           </div>
