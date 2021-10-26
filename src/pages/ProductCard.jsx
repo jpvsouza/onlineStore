@@ -11,12 +11,12 @@ export default class ProductCard extends React.Component {
   }
 
   render() {
-    const { title, price, thumbnail, id } = this.props;
+    const { title, price, thumbnail, id, addToCart } = this.props;
     return (
       <div className="product-card" data-testid="product">
         <Link
           data-testid="product-detail-link"
-          to={ `/product/${id}` }
+          to={ { pathName: `/product/${id}`, state: addToCart } }
           className="LinkCard"
         >
           <h3 className="text">{title}</h3>
