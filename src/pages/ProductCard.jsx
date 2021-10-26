@@ -16,7 +16,8 @@ export default class ProductCard extends React.Component {
       <div className="product-card" data-testid="product">
         <Link
           data-testid="product-detail-link"
-          to={ { pathName: `/product/${id}`, state: addToCart } }
+          to={ { pathName: 
+            `/product/${id}`, state: addToCart } }
           className="LinkCard"
         >
           <h3 className="text">{title}</h3>
