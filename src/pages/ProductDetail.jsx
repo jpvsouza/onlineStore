@@ -36,7 +36,7 @@ export default class ProductDetail extends Component {
     const { product } = this.state;
     // const { thumbnail, title, price, attributes } = location.state;
     return (
-      <div>
+      <div className="product-detail">
         <Link to="/cart" data-testid="shopping-cart-button">Carrinho</Link>
         <p>
           {console.log(product)}

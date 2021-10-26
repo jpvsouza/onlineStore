@@ -7,6 +7,7 @@ import Cart from './pages/Cart';
 import CategoryList from './pages/CategoryList';
 import { getCategories, getProductsFromCategoryAndQuery } from './services/api';
 import ProductDetail from './pages/ProductDetail';
+import './Components.css';
 
 class App extends React.Component {
   constructor(props) {
@@ -40,19 +41,22 @@ class App extends React.Component {
   render() {
     const { products } = this.state;
     return (
-      <div>
+      <div className="AppBody">
         {/* Rotas dinamicas para as paginas */}
         {/* Passa o state via props */}
         <BrowserRouter>
           <Route exact path="/">
+            <div className="CategoryDiv">
+              <CategoryList
+                { ... this.state }
+                setCategoriesByTermAndID={ this.setCategoriesByTermAndID }
+              />
+            </div>
             <Home
               products={ products }
+              className="homeDiv"
             />
             {/* Passa o state via props */}
-            <CategoryList
-              { ... this.state }
-              setCategoriesByTermAndID={ this.setCategoriesByTermAndID }
-            />
           </Route>
           <Route path="/cart" component={ Cart } />
           <Route path="/product/:id" component={ ProductDetail } />
