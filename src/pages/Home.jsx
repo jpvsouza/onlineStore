@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { getProductsFromCategoryAndQuery } from '../services/api';
 import ProductCard from './ProductCard';
 
-
 export default class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -57,6 +56,7 @@ export default class Home extends React.Component {
                   title={ product.title }
                   price={ product.price }
                   thumbnail={ product.thumbnail }
+                  productId={ product.id }
                 />))
           }
         </div>
