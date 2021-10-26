@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { getProductsFromCategoryAndQuery } from '../services/api';
 import ProductCard from './ProductCard';
@@ -9,8 +10,7 @@ export default class Home extends React.Component {
     // Criação dos estados iniciais da página
     this.state = {
       search: '',
-      isLoading: false,
-      products: [],
+      returnFromSearch: [],
     };
   }
 
@@ -25,16 +25,13 @@ export default class Home extends React.Component {
   handleClick = (event) => {
     event.preventDefault();
     const { search } = this.state;
-    this.setState({ isLoading: true });
     getProductsFromCategoryAndQuery('', search)
-      .then((response) => this.setState({
-        products: response.results,
-        isLoading: false,
-      }));
+      .then((response) => this.setState({ returnFromSearch: response.results }));
   }
 
   render() {
-    const { isLoading, products } = this.state;
+    const { returnFromSearch } = this.state;
+    const { products } = this.props;
     return (
       <div>
         <form>
@@ -48,15 +45,22 @@ export default class Home extends React.Component {
         </h1>
         <Link to="/cart" data-testid="shopping-cart-button">Carrinho</Link>
         <div className="product-container">
-          { // Mostra a mensagem de carregando enquanto a api é requisitada e mostra os produtos da lista quando a requisição termina
-            isLoading ? <h1>Carregando...</h1>
-              : products.map((product) => (
+          { // Verifica se o State passado como Props (products) tem algum elemento, se sim renderiza os mesmos, se não renderiza os da pesquisa
+            products.length ? (
+              products.map((pr) => (
                 <ProductCard
-                  key={ product.id }
-                  title={ product.title }
-                  price={ product.price }
-                  thumbnail={ product.thumbnail }
-                  productId={ product.id }
+                  key={ pr.id }
+                  title={ pr.title }
+                  price={ pr.price }
+                  thumbnail={ pr.thumbnail }
+                />)))
+              : returnFromSearch.map((p) => (
+                <ProductCard
+                  key={ p.id }
+                  title={ p.title }
+                  price={ p.price }
+                  thumbnail={ p.thumbnail }
+                  productId={ p.id }
                 />))
           }
         </div>
@@ -64,3 +68,7 @@ export default class Home extends React.Component {
     );
   }
 }
+
+Home.propTypes = {
+  products: PropTypes.arrayOf(PropTypes.object).isRequired,
+};

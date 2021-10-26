@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 export default class CategoryList extends Component {
+  handleClickAPI = ({ target }) => {
+    const { setCategoriesByTermAndID } = this.props;
+    setCategoriesByTermAndID(target.id, target.value);
+  }
+
   // cria o array que sera renderizado no CategoryList, usando a props passada pelo pai (App).
   renderCategories = () => {
     const { AllCategories } = this.props;
@@ -10,7 +15,14 @@ export default class CategoryList extends Component {
       return (
         <div key={ id }>
           <label htmlFor={ id }>
-            <input type="radio" name="lista" id={ id } data-testid="category" />
+            <input
+              type="radio"
+              name="lista"
+              id={ id }
+              value={ name }
+              data-testid="category"
+              onClick={ this.handleClickAPI }
+            />
             <span>
               {name}
             </span>
@@ -32,4 +44,9 @@ export default class CategoryList extends Component {
 
 CategoryList.propTypes = {
   AllCategories: PropTypes.arrayOf(PropTypes.object).isRequired,
+  setCategoriesByTermAndID: PropTypes.func,
+};
+
+CategoryList.defaultProps = {
+  setCategoriesByTermAndID: () => null,
 };

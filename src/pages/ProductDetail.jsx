@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { getProductById, getProductsFromCategoryAndQuery } from '../services/api';
+import { getProductsFromCategoryAndQuery } from '../services/api';
 
 export default class ProductDetail extends Component {
   constructor() {
@@ -13,14 +13,21 @@ export default class ProductDetail extends Component {
     };
   }
 
-  componentDidMount() {
-    this.setProduct();
+  async componentDidMount() {
+    await this.setProduct();
+  }
+
+  getProductById = async (productId) => {
+    const URL = `https://api.mercadolibre.com/items/${productId}`;
+    return fetch(URL)
+      .then((response) => response.json())
+      .then((data) => data);
   }
 
   setProduct = async () => {
     const { match } = this.props;
     const { id } = match.params;
-    const product = await getProductById(id);
+    const product = await this.getProductById(id);
     const result = await
     getProductsFromCategoryAndQuery(product.category_id, product.title);
     this.setState({ product, result });
@@ -34,12 +41,29 @@ export default class ProductDetail extends Component {
         <Link to="/cart" data-testid="shopping-cart-button">Carrinho</Link>
         <p>
           {console.log(product)}
-          {console.log(result)}
+          {/* {console.log(result.results)} */}
         </p>
         <p data-testid="product-detail-name">{ product.title }</p>
         <p>{ product.base_price }</p>
         <img src={ product.thumbnail } alt="" />
-        <p>{ product.date_created }</p>
+        { product ? product.attributes.map((atr) => (
+          <div key={ atr.id }>
+            <p>
+              { atr.name }
+              :
+              { atr.value_name }
+            </p>
+          </div>
+        )) : null }
+        {/* { product.attributes.map((atr) => (
+          <div key={ atr.id }>
+            <p>
+              {atr.name}
+              :
+              {atr.value_name}
+            </p>
+          </div>
+        )) } */}
       </div>
     );
   }
@@ -50,5 +74,13 @@ ProductDetail.propTypes = {
     params: PropTypes.shape({
       id: PropTypes.string,
     }),
-  }).isRequired,
+  }),
+};
+
+ProductDetail.defaultProps = {
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: 'MLB1761790179',
+    }),
+  }),
 };
