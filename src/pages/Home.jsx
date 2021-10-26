@@ -44,7 +44,6 @@ export default class Home extends React.Component {
    render() {
      const { returnFromSearch, ArrayWithPrID } = this.state;
      const { products } = this.props;
-     console.log(ArrayWithPrID);
      return (
        <div>
          <form>

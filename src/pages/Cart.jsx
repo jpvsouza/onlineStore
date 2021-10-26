@@ -32,9 +32,10 @@ export default class Cart extends React.Component {
     const { cartProduct, arr } = this.state;
     return (
       <div>
-        <h1 data-testid="shopping-cart-empty-message">
-          Seu carrinho está vazio
-        </h1>
+        {cartProduct.length === 0 && (
+          <h1 data-testid="shopping-cart-empty-message">
+            Seu carrinho está vazio
+          </h1>)}
         {cartProduct ? cartProduct.map((pr) => (
           <div key={ pr.body.id }>
             <p
@@ -48,8 +49,21 @@ export default class Cart extends React.Component {
               alt={ pr.body.title }
             />
             <p data-testid="shopping-cart-product-quantity">
-              {/* 1 */}
-              {`Quantidade: ${arr.filter((item) => item === pr.body.id).length}`}
+              Quantidade:
+              <button
+                type="button"
+                id={ pr.body.id }
+                onClick={ (e) => {
+                  this.setState({ arr: [...arr, e.target.id] });
+                } }
+              >
+                +
+              </button>
+              <input
+                type="number"
+                value={ arr.filter((item) => item === pr.body.id).length }
+              />
+              <button type="button">-</button>
             </p>
           </div>
         )) : (<p>Carregando...</p>)}

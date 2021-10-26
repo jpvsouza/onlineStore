@@ -5,7 +5,6 @@ export default class ProductCard extends React.Component {
   passToApp = ({ target }) => {
     const { addToCart } = this.props;
     const { id } = target;
-    console.log(id);
     addToCart(id);
   }
 
