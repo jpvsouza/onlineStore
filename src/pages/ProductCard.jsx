@@ -3,19 +3,34 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 export default class ProductCard extends React.Component {
+  passToApp = ({ target }) => {
+    const { addToCart } = this.props;
+    const { id } = target;
+    console.log(id);
+    addToCart(id);
+  }
+
   render() {
-    const { title, price, thumbnail, productId } = this.props;
+    const { title, price, thumbnail, id } = this.props;
     return (
-      <Link data-testid="product-detail-link" to={ `/product/${productId}` }>
-        <div className="product-card" data-testid="product">
+      <div className="product-card" data-testid="product">
+        <Link data-testid="product-detail-link" to={ `/product/${id}` }>
           <h3>{title}</h3>
           <img src={ thumbnail } alt={ title } width="100px" />
           <p>
             R$&nbsp;
             <span>{ price.toFixed(2) }</span>
           </p>
-        </div>
-      </Link>
+        </Link>
+        <button
+          type="button"
+          data-testid="product-add-to-cart"
+          id={ id }
+          onClick={ this.passToApp }
+        >
+          Adicionar ao Carrinho
+        </button>
+      </div>
     );
   }
 }
@@ -24,5 +39,11 @@ ProductCard.propTypes = {
   title: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
   thumbnail: PropTypes.string.isRequired,
-  productId: PropTypes.string.isRequired,
+  id: PropTypes.string,
+  addToCart: PropTypes.func,
+};
+
+ProductCard.defaultProps = {
+  id: undefined,
+  addToCart: () => null,
 };

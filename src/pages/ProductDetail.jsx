@@ -9,7 +9,6 @@ export default class ProductDetail extends Component {
 
     this.state = {
       product: '',
-      result: '',
     };
   }
 
@@ -34,19 +33,18 @@ export default class ProductDetail extends Component {
   }
 
   render() {
-    const { products } = this.props;
+    const { product } = this.state;
     // const { thumbnail, title, price, attributes } = location.state;
     return (
       <div>
         <Link to="/cart" data-testid="shopping-cart-button">Carrinho</Link>
         <p>
-          {console.log(products)}
-          {/* {console.log(result.results)} */}
+          {console.log(product)}
         </p>
-        <p data-testid="product-detail-name">{ products.title }</p>
-        <p>{ products.base_price }</p>
-        <img src={ products.thumbnail } alt="" />
-        { products ? products.attributes.map((atr) => (
+        <p data-testid="product-detail-name">{ product.title }</p>
+        <p>{ product.base_price }</p>
+        <img src={ product.thumbnail } alt="" />
+        { product ? product.attributes.map((atr) => (
           <div key={ atr.id }>
             <p>
               { atr.name }
@@ -56,15 +54,6 @@ export default class ProductDetail extends Component {
             </p>
           </div>
         )) : null }
-        {/* { product.attributes.map((atr) => (
-          <div key={ atr.id }>
-            <p>
-              {atr.name}
-              :
-              {atr.value_name}
-            </p>
-          </div>
-        )) } */}
       </div>
     );
   }
