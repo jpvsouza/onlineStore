@@ -53,6 +53,7 @@ export default class Home extends React.Component {
                   title={ pr.title }
                   price={ pr.price }
                   thumbnail={ pr.thumbnail }
+                  productId={ pr.id }
                 />)))
               : returnFromSearch.map((p) => (
                 <ProductCard
