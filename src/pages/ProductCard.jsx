@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 export default class ProductCard extends React.Component {
   passToApp = ({ target }) => {
@@ -13,12 +14,14 @@ export default class ProductCard extends React.Component {
     const { title, price, thumbnail, id } = this.props;
     return (
       <div className="product-card" data-testid="product">
-        <h3>{title}</h3>
-        <img src={ thumbnail } alt={ title } width="100px" />
-        <p>
-          R$&nbsp;
-          <span>{ price.toFixed(2) }</span>
-        </p>
+        <Link data-testid="product-detail-link" to={ `/product/${id}` }>
+          <h3>{title}</h3>
+          <img src={ thumbnail } alt={ title } width="100px" />
+          <p>
+            R$&nbsp;
+            <span>{ price.toFixed(2) }</span>
+          </p>
+        </Link>
         <button
           type="button"
           data-testid="product-add-to-cart"
