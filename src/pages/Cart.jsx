@@ -12,10 +12,10 @@ export default class Cart extends React.Component {
 
   async componentDidMount() {
     await this.fetchCartProducts();
-    this.funcTest();
+    this.getArrayFromProps();
   }
 
-  funcTest = () => {
+  getArrayFromProps = () => {
     const { location: { state } } = this.props;
     this.setState({ arr: state });
   }
@@ -42,6 +42,11 @@ export default class Cart extends React.Component {
             >
               {pr.body.title}
             </p>
+            <img
+              src={ pr.body.thumbnail }
+              className="product-image"
+              alt={ pr.body.title }
+            />
             <p data-testid="shopping-cart-product-quantity">
               {/* 1 */}
               {`Quantidade: ${arr.filter((item) => item === pr.body.id).length}`}
@@ -55,7 +60,7 @@ export default class Cart extends React.Component {
 
 Cart.propTypes = {
   location: PropTypes.shape({
-    state: PropTypes.string.isRequired,
+    state: PropTypes.arrayOf(PropTypes.string),
   }),
 };
 
