@@ -34,7 +34,7 @@ export default class Home extends React.Component {
    // Função que pega dados do componente ProductCart e altera o state do App, para passar como props para a página do Cart
    addToCart = (param) => {
      const { ArrayWithPrID } = this.state;
-     if (ArrayWithPrID) {
+     if (ArrayWithPrID.length) {
        return this.setState((stateBefore) => ({
          ArrayWithPrID: [...stateBefore.ArrayWithPrID, param],
        }));

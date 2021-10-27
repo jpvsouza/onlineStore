@@ -32,9 +32,8 @@ export default class ProductDetail extends Component {
     this.setState({ product });
   }
 
-  render() {
+  renderProductDetail = () => {
     const { product } = this.state;
-    // const { thumbnail, title, price, attributes } = location.state;
     return (
       <div className="product-detail">
         <Link to="/cart" data-testid="shopping-cart-button">Carrinho</Link>
@@ -54,6 +53,15 @@ export default class ProductDetail extends Component {
             </p>
           </div>
         )) : null }
+      </div>
+    );
+  }
+
+  render() {
+    return (
+      <div>
+        {this.renderProductDetail()}
+        {console.log(this)}
       </div>
     );
   }
