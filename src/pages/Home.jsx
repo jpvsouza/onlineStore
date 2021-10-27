@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { getProductsFromCategoryAndQuery } from '../services/api';
 import ProductCard from './ProductCard';
+import '../Components.css';
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -43,7 +44,7 @@ export default class Home extends React.Component {
      const { returnFromSearch, cartSize } = this.state;
      const { products } = this.props;
      return (
-       <div>
+       <div className="homeDiv">
          <form>
            <input data-testid="query-input" type="text" onChange={ this.handleChange } />
            <button data-testid="query-button" type="submit" onClick={ this.handleClick }>

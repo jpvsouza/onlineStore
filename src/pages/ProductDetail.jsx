@@ -9,11 +9,13 @@ export default class ProductDetail extends Component {
 
     this.state = {
       product: '',
+      cartSize: '',
     };
   }
 
   async componentDidMount() {
     await this.setProduct();
+    this.addToCart();
   }
 
   getProductById = async (productId) => {
@@ -27,20 +29,37 @@ export default class ProductDetail extends Component {
     const { match } = this.props;
     const { id } = match.params;
     const product = await this.getProductById(id);
-    // const result = await
     getProductsFromCategoryAndQuery(product.category_id, product.title);
     this.setState({ product });
   }
 
-  render() {
-    const { product } = this.state;
-    // const { thumbnail, title, price, attributes } = location.state;
+  // se for chamada sem parametro atualiza o valor do CardSize.
+  addToCart = (param) => {
+    if (!param) {
+      this.setState({ cartSize: localStorage.length > 0 ? localStorage
+        .getItem('cart').split(',').length : 0 });
+    }
+    // Caso seja chamada com Parametro, seta o parametro no localstorage.
+    const cartString = localStorage.getItem('cart')
+      ? `${localStorage.getItem('cart')},${param}` : param;
+    localStorage.setItem('cart', cartString);
+    this.setState({ cartSize: localStorage.length > 0 ? localStorage
+      .getItem('cart').split(',').length : 0 });
+  }
+
+  HandleClick = () => {
+    const { match } = this.props;
+    const { id } = match.params;
+    this.addToCart(id);
+  }
+
+  renderProductDetail = () => {
+    const { product, cartSize } = this.state;
     return (
-      <div>
-        <Link to="/cart" data-testid="shopping-cart-button">Carrinho</Link>
-        <p>
-          {console.log(product)}
-        </p>
+      <div className="product-detail">
+        <Link to="/cart" data-testid="shopping-cart-button">
+          {`Carrinho(${cartSize})`}
+        </Link>
         <p data-testid="product-detail-name">{ product.title }</p>
         <p>{ product.base_price }</p>
         <img src={ product.thumbnail } alt="" />
@@ -54,6 +73,21 @@ export default class ProductDetail extends Component {
             </p>
           </div>
         )) : null }
+        <button
+          type="button"
+          onClick={ () => { this.HandleClick(); } }
+          data-testid="product-detail-add-to-cart"
+        >
+          Adicionar ao Carrinho
+        </button>
+      </div>
+    );
+  }
+
+  render() {
+    return (
+      <div>
+        {this.renderProductDetail()}
       </div>
     );
   }

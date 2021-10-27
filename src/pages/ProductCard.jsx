@@ -7,9 +7,13 @@ export default class ProductCard extends React.Component {
     const { title, price, thumbnail, id, addToCart } = this.props;
     return (
       <div className="product-card" data-testid="product">
-        <Link data-testid="product-detail-link" to={ `/product/${id}` }>
-          <h3>{title}</h3>
-          <img src={ thumbnail } alt={ title } width="100px" />
+        <Link
+          data-testid="product-detail-link"
+          to={ { pathname: `/product/${id}`, state: { } } }
+          className="LinkCard"
+        >
+          <h3 className="text">{title}</h3>
+          <img src={ thumbnail } alt={ title } width="100px" className="product-image" />
           <p>
             R$&nbsp;
             <span>{ price.toFixed(2) }</span>
