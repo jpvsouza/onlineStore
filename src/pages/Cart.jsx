@@ -11,7 +11,7 @@ export default class Cart extends React.Component {
   }
 
   async componentDidMount() {
-    if (Object.values(localStorage).length > 0) {
+    if (localStorage.cart) {
       await this.fetchCartProducts();
     }
   }

@@ -11,7 +11,7 @@ export default class Home extends React.Component {
     this.state = {
       search: '',
       returnFromSearch: [],
-      cartSize: localStorage.length,
+      cartSize: localStorage.cart ? localStorage.length : 0,
     };
   }
 
