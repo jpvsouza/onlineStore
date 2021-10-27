@@ -9,13 +9,13 @@ export default class ProductDetail extends Component {
 
     this.state = {
       product: '',
-      cartSize: '',
+      cartSize: localStorage.length > 0 ? localStorage
+        .getItem('cart').split(',').length : 0,
     };
   }
 
   async componentDidMount() {
     await this.setProduct();
-    this.addToCart();
   }
 
   getProductById = async (productId) => {
