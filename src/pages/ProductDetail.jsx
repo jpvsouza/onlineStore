@@ -15,6 +15,7 @@ export default class ProductDetail extends Component {
 
   async componentDidMount() {
     await this.setProduct();
+    this.addToCart();
   }
 
   getProductById = async (productId) => {
@@ -28,12 +29,17 @@ export default class ProductDetail extends Component {
     const { match } = this.props;
     const { id } = match.params;
     const product = await this.getProductById(id);
-    // const result = await
     getProductsFromCategoryAndQuery(product.category_id, product.title);
     this.setState({ product });
   }
 
+  // se for chamada sem parametro atualiza o valor do CardSize.
   addToCart = (param) => {
+    if (!param) {
+      this.setState({ cartSize: localStorage.length > 0 ? localStorage
+        .getItem('cart').split(',').length : 0 });
+    }
+    // Caso seja chamada com Parametro, seta o parametro no localstorage.
     const cartString = localStorage.getItem('cart')
       ? `${localStorage.getItem('cart')},${param}` : param;
     localStorage.setItem('cart', cartString);
@@ -51,10 +57,9 @@ export default class ProductDetail extends Component {
     const { product, cartSize } = this.state;
     return (
       <div className="product-detail">
-        <Link to="/cart" data-testid="shopping-cart-button">{`Carrinho${cartSize}`}</Link>
-        <p>
-          {console.log(product)}
-        </p>
+        <Link to="/cart" data-testid="shopping-cart-button">
+          {`Carrinho(${cartSize})`}
+        </Link>
         <p data-testid="product-detail-name">{ product.title }</p>
         <p>{ product.base_price }</p>
         <img src={ product.thumbnail } alt="" />
@@ -83,7 +88,6 @@ export default class ProductDetail extends Component {
     return (
       <div>
         {this.renderProductDetail()}
-        {console.log(this)}
       </div>
     );
   }
