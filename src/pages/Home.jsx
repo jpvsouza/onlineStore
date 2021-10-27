@@ -12,7 +12,7 @@ export default class Home extends React.Component {
     this.state = {
       search: '',
       returnFromSearch: [],
-      ArrayWithPrID: [],
+      cartSize: localStorage.cart ? localStorage.length : 0,
     };
   }
 
@@ -33,19 +33,16 @@ export default class Home extends React.Component {
 
    // Função que pega dados do componente ProductCart e altera o state do App, para passar como props para a página do Cart
    addToCart = (param) => {
-     const { ArrayWithPrID } = this.state;
-     if (ArrayWithPrID.length) {
-       return this.setState((stateBefore) => ({
-         ArrayWithPrID: [...stateBefore.ArrayWithPrID, param],
-       }));
-     }
-     return this.setState({ ArrayWithPrID: [param] });
+     const cartString = localStorage.getItem('cart')
+       ? `${localStorage.getItem('cart')},${param}` : param;
+     localStorage.setItem('cart', cartString);
+     this.setState({ cartSize: localStorage.length > 0 ? localStorage
+       .getItem('cart').split(',').length : 0 });
    }
 
    render() {
-     const { returnFromSearch, ArrayWithPrID } = this.state;
+     const { returnFromSearch, cartSize } = this.state;
      const { products } = this.props;
-     console.log(ArrayWithPrID);
      return (
        <div className="homeDiv">
          <form>
@@ -58,10 +55,10 @@ export default class Home extends React.Component {
            Digite algum termo de pesquisa ou escolha uma categoria.
          </h1>
          <Link
-           to={ { pathname: '/cart', state: ArrayWithPrID } }
+           to={ { pathname: '/cart' } }
            data-testid="shopping-cart-button"
          >
-           {`Carrinho(${ArrayWithPrID.length})`}
+           {`Carrinho(${cartSize})`}
          </Link>
          <div className="product-container">
            { // Verifica se o State passado como Props (products) tem algum elemento, se sim renderiza os mesmos, se não renderiza os da pesquisa

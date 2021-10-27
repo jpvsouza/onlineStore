@@ -5,37 +5,42 @@ export default class Cart extends React.Component {
   constructor() {
     super();
     this.state = {
-      cartProduct: [],
-      arr: [],
+      products: [],
+      ids: [],
     };
   }
 
   async componentDidMount() {
-    await this.fetchCartProducts();
-    this.getArrayFromProps();
-  }
-
-  getArrayFromProps = () => {
-    const { location: { state } } = this.props;
-    this.setState({ arr: state });
+    if (localStorage.cart) {
+      await this.fetchCartProducts();
+    }
   }
 
   fetchCartProducts = async () => {
-    const { location: { state } } = this.props;
-    const URL = `https://api.mercadolibre.com/items?ids=${state}`;
-    return fetch(URL)
+    await fetch(`https://api.mercadolibre.com/items?ids=${localStorage.getItem('cart')}`)
       .then((response) => response.json())
-      .then((d) => this.setState({ cartProduct: d }));
+      .then((json) => this.setState({
+        products: json,
+        ids: localStorage.getItem('cart').split(','),
+      }));
+  }
+
+  addToCart = (param) => {
+    const cartString = localStorage.getItem('cart')
+      ? `${localStorage.getItem('cart')},${param}` : param;
+    localStorage.setItem('cart', cartString);
+    this.setState({ ids: cartString.split(',') });
   }
 
   render() {
-    const { cartProduct, arr } = this.state;
+    const { products, ids } = this.state;
     return (
       <div>
-        <h1 data-testid="shopping-cart-empty-message">
-          Seu carrinho está vazio
-        </h1>
-        {cartProduct ? cartProduct.map((pr) => (
+        {products.length === 0 && (
+          <h1 data-testid="shopping-cart-empty-message">
+            Seu carrinho está vazio
+          </h1>)}
+        {products ? products.map((pr) => (
           <div key={ pr.body.id }>
             <p
               data-testid="shopping-cart-product-name"
@@ -48,8 +53,47 @@ export default class Cart extends React.Component {
               alt={ pr.body.title }
             />
             <p data-testid="shopping-cart-product-quantity">
-              {/* 1 */}
-              {`Quantidade: ${arr.filter((item) => item === pr.body.id).length}`}
+              Quantidade:
+              <button
+                type="button"
+                id={ pr.body.id }
+                onClick={ () => this.addToCart(pr.body.id) }
+                data-testid="product-increase-quantity"
+              >
+                +
+              </button>
+              <span>
+                { ids.filter((product) => product === pr.body.id).length }
+              </span>
+              <button
+                type="button"
+                data-testid="product-decrease-quantity"
+                onClick={ () => {
+                  const newArr = localStorage.getItem('cart').split(',');
+                  newArr.splice(newArr.indexOf(pr.body.id), 1);
+                  this.setState({ ids: newArr }, () => {
+                    if (newArr.filter((pdct) => pdct === pr.body.id).length < 1) {
+                      this.setState({ products: products
+                        .filter((pd) => pd.body.id !== pr.body.id) });
+                    }
+                  });
+                  localStorage.setItem('cart', newArr);
+                } }
+              >
+                -
+              </button>
+              <button
+                type="button"
+                onClick={ () => {
+                  const newArr = ids
+                    .filter((product) => product !== pr.body.id);
+                  localStorage.setItem('cart', newArr);
+                  this.setState({ products: products
+                    .filter((pd) => pd.body.id !== pr.body.id) });
+                } }
+              >
+                X
+              </button>
             </p>
           </div>
         )) : (<p>Carregando...</p>)}

@@ -9,6 +9,7 @@ export default class ProductDetail extends Component {
 
     this.state = {
       product: '',
+      cartSize: '',
     };
   }
 
@@ -32,11 +33,25 @@ export default class ProductDetail extends Component {
     this.setState({ product });
   }
 
+  addToCart = (param) => {
+    const cartString = localStorage.getItem('cart')
+      ? `${localStorage.getItem('cart')},${param}` : param;
+    localStorage.setItem('cart', cartString);
+    this.setState({ cartSize: localStorage.length > 0 ? localStorage
+      .getItem('cart').split(',').length : 0 });
+  }
+
+  HandleClick = () => {
+    const { match } = this.props;
+    const { id } = match.params;
+    this.addToCart(id);
+  }
+
   renderProductDetail = () => {
-    const { product } = this.state;
+    const { product, cartSize } = this.state;
     return (
       <div className="product-detail">
-        <Link to="/cart" data-testid="shopping-cart-button">Carrinho</Link>
+        <Link to="/cart" data-testid="shopping-cart-button">{`Carrinho${cartSize}`}</Link>
         <p>
           {console.log(product)}
         </p>
@@ -53,6 +68,13 @@ export default class ProductDetail extends Component {
             </p>
           </div>
         )) : null }
+        <button
+          type="button"
+          onClick={ () => { this.HandleClick(); } }
+          data-testid="product-detail-add-to-cart"
+        >
+          Adicionar ao Carrinho
+        </button>
       </div>
     );
   }
