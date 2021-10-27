@@ -6,12 +6,12 @@ export default class Cart extends React.Component {
     super();
     this.state = {
       products: [],
-      ids: localStorage.getItem('cart').split(','),
+      ids: [],
     };
   }
 
   async componentDidMount() {
-    if (localStorage.getItem('cart').length > 0) {
+    if (Object.values(localStorage).length > 0) {
       await this.fetchCartProducts();
     }
   }
@@ -19,7 +19,10 @@ export default class Cart extends React.Component {
   fetchCartProducts = async () => {
     await fetch(`https://api.mercadolibre.com/items?ids=${localStorage.getItem('cart')}`)
       .then((response) => response.json())
-      .then((json) => this.setState({ products: json }));
+      .then((json) => this.setState({
+        products: json,
+        ids: localStorage.getItem('cart').split(','),
+      }));
   }
 
   addToCart = (param) => {
