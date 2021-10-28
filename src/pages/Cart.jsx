@@ -32,6 +32,17 @@ export default class Cart extends React.Component {
     this.setState({ ids: cartString.split(',') });
   }
 
+  checkQuantity = (productId) => {
+    const { products, ids } = this.state;
+    const product = products.find((p) => p.body.id === productId);
+    const cartItems = ids.filter((pro) => pro === productId).length;
+    const maxItems = product.body.available_quantity;
+    if (cartItems >= maxItems) {
+      return true;
+    }
+    return undefined;
+  }
+
   render() {
     const { products, ids } = this.state;
     return (
@@ -59,6 +70,7 @@ export default class Cart extends React.Component {
                 id={ pr.body.id }
                 onClick={ () => this.addToCart(pr.body.id) }
                 data-testid="product-increase-quantity"
+                disabled={ this.checkQuantity(pr.body.id) }
               >
                 +
               </button>
